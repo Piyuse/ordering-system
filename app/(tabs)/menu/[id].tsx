@@ -1,10 +1,12 @@
 import { useLocalSearchParams, Stack } from "expo-router";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import products from "../../../assets/data/products";
+import { useState } from "react";
 const sizes = ["S", "M", "L", "XL"];
 
 const ProductDetailesScreen = () => {
   const { id } = useLocalSearchParams();
+  const [selectedSize, setSelectedSize] = useState("XL");
   const product = products.find((p) => p.id.toString() == id);
   return (
     <View style={{ flex: 1, backgroundColor: "black", padding: 10 }}>
@@ -13,20 +15,29 @@ const ProductDetailesScreen = () => {
       <Text style={{ color: "white" }}>Select Size</Text>
       <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
         {sizes.map((size) => (
-          <View
+          <Pressable
+            onPress={() => {
+              setSelectedSize(size);
+            }}
             style={{
-              backgroundColor: "grey",
               width: 50,
               aspectRatio: 1,
               borderRadius: 25,
               alignItems: "center",
               justifyContent: "center",
+              backgroundColor: selectedSize == size ? "white" : "grey",
             }}
           >
-            <Text style={{ color: "white" }} key={size}>
+            <Text
+              style={{
+                marginVertical: 10,
+                color: selectedSize == size ? "black" : "white",
+              }}
+              key={size}
+            >
               {size}
             </Text>
-          </View>
+          </Pressable>
         ))}
       </View>
       <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>
